@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>UMP Gestão - Portal Federação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Portal oficial da Federação UMP - Acesse os sistemas das unidades" />
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#3e4990">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UMP Gestão">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Ícones -->
+  <link rel="apple-touch-icon" href="img/192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/16.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --primary: #3e4990;
+      --secondary: #e17048;
+      --gradient-start: #2d3570;
+      --gradient-end: #4a5399;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #1a202c;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --shadow-hover: rgba(62, 73, 144, 0.15);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1419;
+        --card: #1a1f2e;
+        --text: #e5e7eb;
+        --text-light: #94a3b8;
+        --border: #2d3748;
+        --shadow: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hero Header */
+    .hero {
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--primary) 50%, var(--gradient-end) 100%);
+      padding: env(safe-area-inset-top) 0 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      top: -50%;
+      left: -50%;
+      animation: rotate 30s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      padding: 40px 20px 60px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo-hero {
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 24px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      animation: fadeInScale 0.5s ease-out;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .logo-hero img {
+      width: 70px;
+      height: auto;
+    }
+
+    .hero h1 {
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      animation: fadeInUp 0.6s ease-out 0.1s backwards;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.95);
+      font-size: 1.05rem;
+      animation: fadeInUp 0.6s ease-out 0.2s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Install Prompt */
+    .install-prompt {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -4px 20px var(--shadow);
+      padding: 20px;
+      z-index: 1000;
+      animation: slideUp 0.3s ease-out;
+      border-top: 3px solid var(--primary);
+    }
+
+    .install-prompt.show {
+      display: block;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .install-content {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .install-icon {
+      font-size: 2.5rem;
+    }
+
+    .install-text {
+      flex: 1;
+    }
+
+    .install-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .install-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+
+    .install-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .install-btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .install-btn.primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .install-btn.primary:active {
+      transform: scale(0.96);
+      background: var(--gradient-start);
+    }
+
+    .install-btn.secondary {
+      background: transparent;
+      color: var(--text-light);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: -40px auto 0;
+      padding: 0 20px 60px;
+      position: relative;
+    }
+
+    /* Quick Access Card */
+    .quick-access {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px var(--shadow);
+      animation: fadeInUp 0.6s ease-out 0.3s backwards;
+    }
+
+    .quick-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quick-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    /* Apps Grid */
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .app-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .app-card:hover::before,
+    .app-card:active::before {
+      transform: scaleX(1);
+    }
+
+    .app-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+
+    .app-card:active {
+      transform: translateY(-2px);
+    }
+
+    .app-logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #f8f9fb, #ffffff);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .app-card:hover .app-logo {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .app-logo img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    .app-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .app-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      background: linear-gradient(135deg, rgba(62,73,144,0.1), rgba(225,112,72,0.1));
+      color: var(--primary);
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Info Section */
+    .info-section {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 32px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px var(--shadow);
+      animation: fadeInUp 0.6s ease-out 0.4s backwards;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .feature {
+      text-align: center;
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 2px 4px var(--shadow));
+    }
+
+    .feature-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .contact-item {
+      background: var(--bg);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .contact-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .contact-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .contact-value a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .contact-value a:hover {
+      color: var(--secondary);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 24px 20px;
+      margin-top: 40px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .apps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .install-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .install-actions {
+        width: 100%;
+      }
+
+      .install-btn {
+        flex: 1;
+      }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .apps-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Animations for app cards */
+    .app-card {
+      animation: fadeInUp 0.5s ease-out backwards;
+    }
+
+    .app-card:nth-child(1) { animation-delay: 0.1s; }
+    .app-card:nth-child(2) { animation-delay: 0.15s; }
+    .app-card:nth-child(3) { animation-delay: 0.2s; }
+    .app-card:nth-child(4) { animation-delay: 0.25s; }
+    .app-card:nth-child(5) { animation-delay: 0.3s; }
+    .app-card:nth-child(6) { animation-delay: 0.35s; }
+    .app-card:nth-child(7) { animation-delay: 0.4s; }
+    .app-card:nth-child(8) { animation-delay: 0.45s; }
+    .app-card:nth-child(9) { animation-delay: 0.5s; }
+  </style>
+</head>
+<body>
+
+  <!-- Install Prompt -->
+  <div class="install-prompt" id="installPrompt">
+    <div class="install-content">
+      <div class="install-icon">📱</div>
+      <div class="install-text">
+        <div class="install-title">Instale o App UMP Gestão</div>
+        <div class="install-subtitle">Acesso rápido na sua tela inicial</div>
+      </div>
+      <div class="install-actions">
+        <button class="install-btn primary" id="installBtn">Instalar</button>
+        <button class="install-btn secondary" id="dismissBtn">×</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="logo-hero">
+        <img src="img/logo.png" alt="Federação UMP" />
+      </div>
+      <h1>UMP Gestão - FPOPB</h1>
+      <p>Portal Unificado de Gestão</p>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+    <!-- Quick Access -->
+    <section class="quick-access">
+      <h2 class="quick-title">Acesso Rápido</h2>
+      <p class="quick-subtitle">Selecione a unidade que deseja acessar</p>
+      
+      <div class="apps-grid">
+        <a href="https://www.appsheet.com/start/b7ae56c0-a576-45d0-b066-c9526f5b8aee" class="app-card">
+          <div class="app-logo">
+            <img src="img/logo.png" alt="Federação" />
+          </div>
+          <div class="app-name">Federação</div>
+          <div class="app-badge">Central</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/1f8d2212-c85b-46aa-b5cd-ba1b637055f3" class="app-card">
+          <div class="app-logo">
+            <img src="img/sousa.png" alt="Sousa" />
+          </div>
+          <div class="app-name">Sousa</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/2cbde1ea-db99-4190-a36a-bb81107c3fe0" class="app-card">
+          <div class="app-logo">
+            <img src="img/pombal.png" alt="Pombal" />
+          </div>
+          <div class="app-name">Pombal</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/67de0738-eea8-4820-b0a8-9c4f136c9ea3" class="app-card">
+          <div class="app-logo">
+            <img src="img/cajazeiras.png" alt="Cajazeiras" />
+          </div>
+          <div class="app-name">Cajazeiras</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/0b651c32-e978-424c-8dc2-c60e588c1805" class="app-card">
+          <div class="app-logo">
+            <img src="img/primeira.png" alt="Patos I" />
+          </div>
+          <div class="app-name">Patos I</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/778fde3a-740e-4ac1-beea-bc4cfc11d961" class="app-card">
+          <div class="app-logo">
+            <img src="img/segunda.png" alt="Patos II" />
+          </div>
+          <div class="app-name">Patos II</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/112bcce9-fece-4d9b-8648-3b111f6e8f00" class="app-card">
+          <div class="app-logo">
+            <img src="img/quarta.png" alt="Patos IV" />
+          </div>
+          <div class="app-name">Patos IV</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/3ea68fcc-f7b6-490a-936e-753f1f38d180" class="app-card">
+          <div class="app-logo">
+            <img src="img/paulista.png" alt="Paulista" />
+          </div>
+          <div class="app-name">Paulista</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+
+        <a href="https://www.appsheet.com/start/5697d572-2cd2-4c8c-8341-587756f013bd" class="app-card">
+          <div class="app-logo">
+            <img src="img/pocodantas.png" alt="Poço Dantas" />
+          </div>
+          <div class="app-name">Poço Dantas</div>
+          <div class="app-badge">Unidade</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="info-section">
+      <h2 class="section-title">Sobre a Plataforma</h2>
+      <p style="color: var(--text-light); margin-bottom: 24px; line-height: 1.7;">
+        O UMP Gestão é uma plataforma criada para auxiliar as diretorias da Federação e Locais na administração eficiente, transparente e integrada de suas atividades, reunindo controle financeiro, acompanhamento de UMPs e sócios, relatórios estratégicos e gestão de acessos em um único ambiente online e sincronizado.
+      </p>
+    </section>
+
+    <!-- Contact -->
+    <section class="info-section">
+      <h2 class="section-title">Contato</h2>
+
+      <div class="contact-grid">
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <img src="img/gmail.png" alt="E-mail">
+          </div>
+          <div class="contact-label">E-mail</div>
+          <div class="contact-value">
+            <a href="mailto:presbiterianamocidade@gmail.com">
+              presbiterianamocidade@gmail.com
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <img src="img/whats.png" alt="WhatsApp">
+          </div>
+          <div class="contact-label">Suporte</div>
+          <div class="contact-value">
+            <a href="https://wa.me/5583981946060" target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p><strong>© 2026 UMP Gestão</strong> · Desenvolvido por Miquéias Teles</p>
+    </div>
+  </footer>
+
+  <script>
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('✅ Service Worker registrado'))
+          .catch(err => console.log('❌ Erro:', err));
+      });
+    }
+
+    // Install Prompt
+    let deferredPrompt;
+    const installPrompt = document.getElementById('installPrompt');
+    const installBtn = document.getElementById('installBtn');
+    const dismissBtn = document.getElementById('dismissBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installPrompt.classList.add('show');
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(outcome === 'accepted' ? '✅ Instalado!' : '❌ Cancelado');
+        deferredPrompt = null;
+        installPrompt.classList.remove('show');
+      }
+    });
+
+    dismissBtn.addEventListener('click', () => {
+      installPrompt.classList.remove('show');
+    });
+
+    // iOS Instructions
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone;
+
+    if (isIOS && !isStandalone) {
+      setTimeout(() => {
+        const msg = '📱 Para instalar no iPhone/iPad:\n\n1. Toque no ícone de compartilhar (□↑)\n2. Role e selecione "Adicionar à Tela de Início"\n3. Toque em "Adicionar"\n\nDeseja ver as instruções?';
+        if (confirm(msg)) {
+          alert('✅ PASSO A PASSO:\n\n1️⃣ Toque no botão de compartilhar (ícone com seta para cima)\n2️⃣ Role a lista para baixo\n3️⃣ Toque em "Adicionar à Tela de Início"\n4️⃣ Confirme tocando em "Adicionar"\n\n🎉 Pronto! O app aparecerá na sua tela inicial!');
+        }
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
