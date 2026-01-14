@@ -484,6 +484,7 @@
       background: var(--primary);
       border-radius: 2px;
       transition: all 0.3s ease;
+      pointer-events: none;
     }
 
     .mobile-menu-btn.active span:nth-child(1) {
@@ -511,10 +512,12 @@
       transition: left 0.3s ease;
       overflow-y: auto;
       padding: 80px 20px 20px;
+      pointer-events: none;
     }
 
     .sidebar.active {
       left: 0;
+      pointer-events: auto;
     }
 
     .sidebar-overlay {
@@ -528,10 +531,12 @@
       z-index: 999;
       opacity: 0;
       transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
     .sidebar-overlay.active {
       opacity: 1;
+      pointer-events: auto;
     }
 
     .sidebar-section {
@@ -945,7 +950,8 @@
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    function toggleMenu() {
+    function toggleMenu(e) {
+      if (e) e.stopPropagation();
       menuBtn.classList.toggle('active');
       sidebar.classList.toggle('active');
       sidebarOverlay.classList.toggle('active');
@@ -955,11 +961,12 @@
     menuBtn.addEventListener('click', toggleMenu);
     sidebarOverlay.addEventListener('click', toggleMenu);
 
-    // Fechar menu ao clicar em links
+    // Fechar menu ao clicar em links da sidebar
     const sidebarLinks = sidebar.querySelectorAll('a');
     sidebarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        setTimeout(toggleMenu, 300);
+      link.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setTimeout(toggleMenu, 200);
       });
     });
 
