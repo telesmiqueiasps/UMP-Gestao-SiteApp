@@ -453,14 +453,240 @@
       margin: 0 auto;
     }
 
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:active {
+      transform: scale(0.95);
+    }
+
+    .mobile-menu-btn span {
+      width: 24px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    .sidebar {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100vh;
+      background: white;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding: 80px 20px 20px;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+    }
+
+    .sidebar-section {
+      margin-bottom: 32px;
+    }
+
+    .sidebar-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .sidebar-text {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .sidebar-contact-item:hover {
+      background: var(--border);
+      transform: translateX(4px);
+    }
+
+    .sidebar-contact-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-contact-icon img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .sidebar-contact-info {
+      flex: 1;
+    }
+
+    .sidebar-contact-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .sidebar-contact-value {
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
     /* Responsive */
     @media (max-width: 640px) {
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      .sidebar {
+        display: block;
+      }
+
+      .sidebar-overlay {
+        display: block;
+      }
+
+      .hero {
+        padding-top: calc(env(safe-area-inset-top) + 80px);
+      }
+
+      .hero-content {
+        padding: 20px 20px 50px;
+      }
+
+      .logo-hero {
+        width: 80px;
+        height: 80px;
+      }
+
+      .logo-hero img {
+        width: 55px;
+      }
+
       .hero h1 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+      }
+
+      .hero p {
+        font-size: 0.95rem;
+      }
+
+      .container {
+        margin-top: -30px;
+      }
+
+      .quick-access {
+        padding: 20px 16px;
+      }
+
+      .quick-title {
+        font-size: 1rem;
+      }
+
+      .quick-subtitle {
+        font-size: 0.85rem;
       }
 
       .apps-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .app-card {
+        padding: 16px 12px;
+      }
+
+      .app-logo {
+        width: 56px;
+        height: 56px;
+      }
+
+      .app-logo img {
+        width: 38px;
+        height: 38px;
+      }
+
+      .app-name {
+        font-size: 0.85rem;
+      }
+
+      .app-badge {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+      }
+
+      .info-section {
+        display: none;
       }
 
       .install-content {
@@ -474,6 +700,10 @@
 
       .install-btn {
         flex: 1;
+      }
+
+      .footer-content p {
+        font-size: 0.85rem;
       }
     }
 
@@ -500,6 +730,57 @@
   </style>
 </head>
 <body>
+
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" id="menuBtn">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">Sobre</h3>
+      <p class="sidebar-text">
+        O UMP Gestão é uma plataforma criada para auxiliar as diretorias da Federação e Locais na administração eficiente, transparente e integrada de suas atividades.
+      </p>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="sidebar-title">Contato</h3>
+      
+      <a href="mailto:presbiterianamocidade@gmail.com" class="sidebar-contact-item">
+        <div class="sidebar-contact-icon">
+          <img src="img/gmail.png" alt="E-mail">
+        </div>
+        <div class="sidebar-contact-info">
+          <div class="sidebar-contact-label">E-mail</div>
+          <div class="sidebar-contact-value">Enviar e-mail</div>
+        </div>
+      </a>
+
+      <a href="https://wa.me/5583981946060" target="_blank" rel="noopener" class="sidebar-contact-item">
+        <div class="sidebar-contact-icon">
+          <img src="img/whats.png" alt="WhatsApp">
+        </div>
+        <div class="sidebar-contact-info">
+          <div class="sidebar-contact-label">Suporte</div>
+          <div class="sidebar-contact-value">WhatsApp</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <p style="font-size: 0.8rem; color: var(--text-light); text-align: center; padding-top: 20px; border-top: 1px solid var(--border);">
+        <strong>© 2026 UMP Gestão</strong><br>
+        Desenvolvido por Miquéias Teles
+      </p>
+    </div>
+  </aside>
 
   <!-- Install Prompt -->
   <div class="install-prompt" id="installPrompt">
@@ -659,6 +940,29 @@
   </footer>
 
   <script>
+    // Mobile Menu
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleMenu() {
+      menuBtn.classList.toggle('active');
+      sidebar.classList.toggle('active');
+      sidebarOverlay.classList.toggle('active');
+      document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    sidebarOverlay.addEventListener('click', toggleMenu);
+
+    // Fechar menu ao clicar em links
+    const sidebarLinks = sidebar.querySelectorAll('a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        setTimeout(toggleMenu, 300);
+      });
+    });
+
     // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
