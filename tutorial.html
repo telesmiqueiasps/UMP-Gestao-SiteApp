@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tutorial - UMP Gestão</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Tutorial de uso do UMP Gestão" />
+  <meta name="theme-color" content="#3e4990">
+  <link rel="icon" type="image/png" href="img/32.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --primary: #3e4990;
+      --secondary: #e17048;
+      --gradient-start: #2d3570;
+      --gradient-end: #4a5399;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #1a202c;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --shadow: rgba(0, 0, 0, 0.08);
+      --success: #10b981;
+      --info: #3b82f6;
+      --warning: #f59e0b;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--primary) 50%, var(--gradient-end) 100%);
+      padding: env(safe-area-inset-top) 0 0 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-4px);
+    }
+
+    .header-title {
+      flex: 1;
+    }
+
+    .header-title h1 {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .header-title p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* Tutorial Navigation */
+    .tutorial-nav {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+
+    .nav-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .nav-item {
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .nav-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .nav-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .nav-text {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    /* Tutorial Section */
+    .tutorial-section {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px var(--shadow);
+      scroll-margin-top: 100px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 4px var(--shadow));
+    }
+
+    .section-title {
+      flex: 1;
+    }
+
+    .section-title h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .section-title p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(62, 73, 144, 0.3);
+    }
+
+    .step-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    .step-desc {
+      color: var(--text-light);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .step-desc strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+      border-left: 4px solid var(--info);
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .info-box.success {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border-left-color: var(--success);
+    }
+
+    .info-box.warning {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+      border-left-color: var(--warning);
+    }
+
+    .info-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+
+    .info-text {
+      color: var(--text-light);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Video Container */
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: var(--bg);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Feature List */
+    .feature-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .feature-item {
+      background: var(--bg);
+      padding: 16px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feature-content h4 {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .feature-content p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* FAQ */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .faq-answer {
+      color: var(--text-light);
+      line-height: 1.7;
+      padding-left: 24px;
+    }
+
+    .video-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    }
+
+    .tutorial-video {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    background: #000;
+    }
+
+    .video-warning {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #fff3cd;
+    color: #856404;
+    font-size: 0.95rem;
+    border: 1px solid #ffeeba;
+    }
+
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .header-content {
+        padding: 16px;
+      }
+
+      .header-title h1 {
+        font-size: 1.2rem;
+      }
+
+      .header-title p {
+        font-size: 0.8rem;
+      }
+
+      .container {
+        padding: 24px 16px 60px;
+      }
+
+      .tutorial-section {
+        padding: 24px 20px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .section-icon {
+        font-size: 2rem;
+      }
+
+      .section-title h2 {
+        font-size: 1.3rem;
+      }
+
+      .nav-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        gap: 16px;
+      }
+
+      .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="back-btn">←</a>
+      <div class="header-title">
+        <h1>Tutorial UMP Gestão</h1>
+        <p>Aprenda a usar a plataforma</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+
+    <!-- Navigation -->
+    <nav class="tutorial-nav">
+      <h2 class="nav-title">Navegação Rápida</h2>
+      <div class="nav-grid">
+        <a href="#primeiros-passos" class="nav-item">
+          <img src="img/primeiros-passos.png" alt="" class="nav-icon">
+          <span class="nav-text">Primeiros Passos</span>
+        </a>
+        <a href="#socios" class="nav-item">
+          <img src="img/socios.png" alt="" class="nav-icon">
+          <span class="nav-text">Gestão de Sócios</span>
+        </a>
+        <a href="#financeiro" class="nav-item">
+          <img src="img/financeiro.png" alt="" class="nav-icon">
+          <span class="nav-text">Gestão Financeira</span>
+        </a>
+        <a href="#atividades" class="nav-item">
+          <img src="img/calendario.png" alt="" class="nav-icon">
+          <span class="nav-text">Gestão de Atividades</span>
+        </a>
+        <a href="#plenarias" class="nav-item">
+          <img src="img/doc.png" alt="" class="nav-icon">
+          <span class="nav-text">Plenárias e ATAS</span>
+        </a>
+        <a href="#faq" class="nav-item">
+          <img src="img/duvida.png" alt="" class="nav-icon">
+          <span class="nav-text">Perguntas Frequentes</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Primeiros Passos -->
+    <section id="primeiros-passos" class="tutorial-section">
+      <div class="section-header">
+        <img src="img/primeiros-passos.png" alt="" class="section-icon">
+        <div class="section-title">
+          <h2>Primeiros Passos</h2>
+          <p>Como começar a usar o UMP Gestão</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Acesse sua unidade</h3>
+            <p class="step-desc">
+              Na tela inicial, clique no card da sua unidade (Federação, Sousa, Pombal, etc.). 
+              Você será direcionado para o sistema correspondente.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Faça login</h3>
+            <p class="step-desc">
+              Use sua conta Google autorizada para acessar o sistema. <strong>Apenas membros autorizados</strong> 
+              têm acesso aos dados da unidade.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Explore o menu principal</h3>
+            <p class="step-desc">
+              Na plataforma, você encontrará abas para: Sócios, Financeiro, Atividades, Relatórios, Configurações, etc. 
+              Navegue pelas seções conforme sua necessidade.
+            </p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3 class="step-title">Instale o app (opcional)</h3>
+            <p class="step-desc">
+              Para acesso ainda mais rápido, instale o UMP Gestão no seu celular. 
+              Um banner aparecerá automaticamente com a opção de instalação.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box success">
+        <div class="info-title">✅ Dica</div>
+        <p class="info-text">
+          Salve o link da sua unidade nos favoritos do navegador para acessar rapidamente sempre que precisar!
+        </p>
+      </div>
+    </section>
+
+    <!-- Gestão de Sócios -->
+    <section id="socios" class="tutorial-section">
+    <div class="section-header">
+        <img src="img/socios.png" alt="" class="section-icon">
+        <div class="section-title">
+        <h2>Gestão de Sócios</h2>
+        <p>Tutorial em vídeo do módulo de sócios</p>
+        </div>
+    </div>
+
+    <div class="video-wrapper">
+        <video
+        class="tutorial-video"
+        controls
+        preload="none"
+        >
+        <source src="tutorial/socios.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução de vídeos.
+        </video>
+
+        <div class="video-warning">
+        ⚠️ O vídeo deste módulo ainda não está disponível.<br>
+        Assim que o tutorial for concluído, ele será incluído automaticamente nesta seção.
+        </div>
+    </div>
+    </section>
+
+
+    <!-- Gestão Financeira -->
+    <section id="financeiro" class="tutorial-section">
+    <div class="section-header">
+        <img src="img/financeiro.png" alt="" class="section-icon">
+        <div class="section-title">
+        <h2>Gestão Financeira</h2>
+        <p>Tutorial em vídeo dos módulos financeiros</p>
+        </div>
+    </div>
+
+    <div class="video-wrapper">
+        <video
+        class="tutorial-video"
+        controls
+        preload="none"
+        >
+        <source src="tutorial/financeiro.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução de vídeos.
+        </video>
+
+        <div class="video-warning">
+        ⚠️ O vídeo deste módulo ainda não está disponível.<br>
+        Assim que o tutorial for concluído, ele será incluído automaticamente nesta seção.
+        </div>
+    </div>
+    </section>
+
+    <!-- Gestão de Atividades -->
+    <section id="atividades" class="tutorial-section">
+    <div class="section-header">
+        <img src="img/calendario.png" alt="" class="section-icon">
+        <div class="section-title">
+        <h2>Gestão de Atividades</h2>
+        <p>Tutorial em vídeo dos módulos de atividades</p>
+        </div>
+    </div>
+
+    <div class="video-wrapper">
+        <video
+        class="tutorial-video"
+        controls
+        preload="none"
+        >
+        <source src="tutorial/atividades.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução de vídeos.
+        </video>
+
+        <div class="video-warning">
+        ⚠️ O vídeo deste módulo ainda não está disponível.<br>
+        Assim que o tutorial for concluído, ele será incluído automaticamente nesta seção.
+        </div>
+    </div>
+    </section>
+
+    <!-- Plenárias e ATAS -->
+    <section id="plenarias" class="tutorial-section">
+    <div class="section-header">
+        <img src="img/doc.png" alt="" class="section-icon">
+        <div class="section-title">
+        <h2>Plenárias e ATAS</h2>
+        <p>Tutorial em vídeo dos módulos de plenárias e atas</p>
+        </div>
+    </div>
+
+    <div class="video-wrapper">
+        <video
+        class="tutorial-video"
+        controls
+        preload="none"
+        >
+        <source src="tutorial/plenarias.mp4" type="video/mp4">
+        Seu navegador não suporta a reprodução de vídeos.
+        </video>
+
+        <div class="video-warning">
+        ⚠️ O vídeo deste módulo ainda não está disponível.<br>
+        Assim que o tutorial for concluído, ele será incluído automaticamente nesta seção.
+        </div>
+    </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="tutorial-section">
+      <div class="section-header">
+        <img src="img/duvida.png" alt="" class="section-icon">
+        <div class="section-title">
+          <h2>Perguntas Frequentes</h2>
+          <p>Respostas para as dúvidas mais comuns</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Como solicito acesso ao sistema?
+        </div>
+        <p class="faq-answer">
+          Entre em contato com a diretoria da Federação ou da sua UMP local. Apenas membros autorizados 
+          podem ter acesso ao sistema por questões de segurança.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Posso acessar de qualquer dispositivo?
+        </div>
+        <p class="faq-answer">
+          Sim! O UMP Gestão funciona em qualquer navegador moderno (Chrome, Safari, Firefox, Edge) 
+          e em celulares, tablets e computadores.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Os dados estão seguros?
+        </div>
+        <p class="faq-answer">
+          Sim. Todos os dados são armazenados em nuvem com criptografia e backup automático. 
+          Apenas usuários autorizados têm acesso.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Como faço backup dos dados?
+        </div>
+        <p class="faq-answer">
+          O backup é automático! Como o sistema usa o Google, todos os dados são sincronizados 
+          e salvos na nuvem em tempo real.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Encontrei um problema, o que faço?
+        </div>
+        <p class="faq-answer">
+          Entre em contato pelo WhatsApp (83) 98194-6060 ou envie um e-mail para 
+          presbiterianamocidade@gmail.com descrevendo o problema.
+        </p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>❔</span>
+          Posso sugerir melhorias?
+        </div>
+        <p class="faq-answer">
+          Com certeza! Sua opinião é muito importante. Use os mesmos canais de contato para enviar 
+          sugestões de melhorias e novas funcionalidades.
+        </p>
+      </div>
+    </section>
+
+    <!-- Ajuda Final -->
+    <section class="tutorial-section">
+      <div class="section-header">
+        <span class="section-icon">💬</span>
+        <div class="section-title">
+          <h2>Precisa de Mais Ajuda?</h2>
+          <p>Estamos aqui para ajudar você</p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">📞 Suporte</div>
+        <p class="info-text">
+          <strong>WhatsApp:</strong> (83) 98194-6060<br>
+          <strong>E-mail:</strong> presbiterianamocidade@gmail.com<br><br>
+          Nossa equipe está disponível para esclarecer dúvidas e ajudar no que precisar!
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
