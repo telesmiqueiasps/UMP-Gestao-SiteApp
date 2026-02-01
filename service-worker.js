@@ -12,6 +12,7 @@ const ASSETS = [
   '/img/quarta.png',
   '/img/paulista.png',
   '/img/pocodantas.png',
+  '/img/logoipbsousa.png',
   '/img/192.png',
   '/img/512.png'
 ];
